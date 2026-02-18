@@ -57,8 +57,12 @@ func TestUpdateShoppingCampaign(t *testing.T) {
 		t.Error("updated campaign not equal to campaignCreated campaign")
 	}
 
+	businessId := "7489850869144485895"
+	pixelId := "7595236536677974034"
+	catalogId := "7595212727484827393"
+
 	// Create adgroup
-	adGroup := NewShoppingAdGroup("Default adgroup", "7595236536677974034", "7595212727484827393")
+	adGroup := NewShoppingAdGroup("Default adgroup", businessId, pixelId, catalogId)
 	adGroup.LocationIds = []string{"3012874", "3023519"}
 	adGroup.AgeGroups = []AdGroupAgeGroup{AdGroupAgeGroup_25_34}
 
