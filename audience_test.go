@@ -7,6 +7,6 @@ import (
 func TestGetAudiences(t *testing.T) {
 	initTestSession()
 
-	audiences, err := GetAudiences(testAccount)
+	audiences, err := GetAudiences(getTestAccount())
 	assertNotEmptyResult(t, audiences, err)
 }
