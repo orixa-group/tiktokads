@@ -1,0 +1,42 @@
+package tiktokads
+
+// OAuth
+const urlOAuthInstall = "https://business-api.tiktok.com/portal/auth"
+const urlOAuthFetchTokenFromAuthCode = "https://business-api.tiktok.com/open_api/v1.3/oauth2/access_token/"
+
+// Business API
+const urlAccountsFetch = "https://business-api.tiktok.com/open_api/v1.3/oauth2/advertiser/get/"
+const urlBusinessCentersFetch = "https://business-api.tiktok.com/open_api/v1.3/bc/get/"
+
+// catalogs
+const urlCatalogCreate = "https://business-api.tiktok.com/open_api/v1.3/catalog/create/"
+const urlCatalogGet = "https://business-api.tiktok.com/open_api/v1.3/catalog/get/"
+const urlCatalogDelete = "https://business-api.tiktok.com/open_api/v1.3/catalog/delete/"
+const urlCatalogFeedGet = "https://business-api.tiktok.com/open_api/v1.3/catalog/feed/get/"
+const urlCatalogFeedCreate = "https://business-api.tiktok.com/open_api/v1.3/catalog/feed/create/"
+const urlCatalogFeedUpdate = "https://business-api.tiktok.com/open_api/v1.3/catalog/feed/update/"
+const urlCatalogSetGet = "https://business-api.tiktok.com/open_api/v1.3/catalog/set/get/"
+const urlCatalogSetUpdate = "https://business-api.tiktok.com/open_api/v1.3/catalog/set/update/"
+const urlCatalogSetCreate = "https://business-api.tiktok.com/open_api/v1.3/catalog/set/create/"
+const urlCatalogAddEvent = "https://business-api.tiktok.com/open_api/v1.3/catalog/eventsource/bind/"
+
+const urlBusinessPixelGet = "https://business-api.tiktok.com/open_api/v1.3/bc/pixel/get/"
+const urlPixelGet = "https://business-api.tiktok.com/open_api/v1.3/pixel/list/"
+
+// campaigns
+const urlCampaignSmartCreate = "https://business-api.tiktok.com/open_api/v1.3/campaign/spc/create/"
+const urlCampaignsFetch = "https://business-api.tiktok.com/open_api/v1.3/campaign/get/"
+const urlCampaignCreate = "https://business-api.tiktok.com/open_api/v1.3/campaign/create/"
+const urlCampaignUpdate = "https://business-api.tiktok.com/open_api/v1.3/campaign/update/"
+const urlCampaignStatusUpdate = "https://business-api.tiktok.com/open_api/v1.3/campaign/status/update/"
+
+// adgroups
+const urlAdGroupGet = "https://business-api.tiktok.com/open_api/v1.3/adgroup/get/"
+const urlAdGroupCreate = "https://business-api.tiktok.com/open_api/v1.3/adgroup/create/"
+const urlAdGroupUpdate = "https://business-api.tiktok.com/open_api/v1.3/adgroup/update/"
+
+// audiences
+const urlAudienceGet = "https://business-api.tiktok.com/open_api/v1.3/dmp/custom_audience/list/"
+
+// const urlInterestsGet = "https://business-api.tiktok.com/open_api/v1.3/targeting/search/"
+const urlInterestsGet = "https://business-api.tiktok.com/open_api/v1.3/tool/interest_keyword/recommend/"
