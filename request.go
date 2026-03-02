@@ -93,7 +93,7 @@ func fetchAllPages[T any](req *http.Request, perPage int) ([]*T, error) {
 		if res, err := fetch[listResult[T]](req); nil != err {
 			return nil, err
 		} else {
-			allResults = append(allResults, res.List...)
+			allResults = append(allResults, res.GetResults()...)
 			if len(res.List) < perPage {
 				break
 			}

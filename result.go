@@ -12,8 +12,18 @@ type emptyResult struct {
 }
 
 // listResult structure for array of structure in apiResult
+// Results can be in 'list' json attribute or other attributes ('identity_list') depending on resource type
 type listResult[T any] struct {
-	List []*T `json:"list"`
+	List         []*T `json:"list"`
+	IdentityList []*T `json:"identity_list"`
+}
+
+func (l *listResult[T]) GetResults() []*T {
+	if len(l.IdentityList) > 0 {
+		return l.IdentityList
+	}
+
+	return l.List
 }
 
 type listFeedResult[T any] struct {
