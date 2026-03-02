@@ -2,6 +2,7 @@ package tiktokads
 
 import (
 	"cmp"
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -34,6 +35,23 @@ func TestGetCampaigns(t *testing.T) {
 func TestUpdateShoppingCampaign(t *testing.T) {
 	initTestSession()
 
+	businessId := "7489850869144485895"
+	pixelId := "7595236536677974034"
+	catalogId := "7595212727484827393"
+
+	identityId := ""
+	identities, err := GetAccountIdentities(getTestAccount())
+	assertNotEmptyResult(t, identities, err)
+	for _, identity := range identities {
+		if identity.IsAvailable() && identity.IsCustomizedUser() {
+			identityId = identity.Id
+		}
+	}
+
+	if len(identityId) == 0 {
+		t.Fatal("identity id should not be empty")
+	}
+
 	campaign := NewShoppingCatalogCampaign(fmt.Sprintf("[TestUnit] Test Shopping Campaign %s", time.Now().Format(time.DateTime)))
 	campaign.SetBudget(12345)
 	campaign.SetDynamicBudget(true)
@@ -57,10 +75,6 @@ func TestUpdateShoppingCampaign(t *testing.T) {
 		t.Error("updated campaign not equal to campaignCreated campaign")
 	}
 
-	businessId := "7489850869144485895"
-	pixelId := "7595236536677974034"
-	catalogId := "7595212727484827393"
-
 	// Create adgroup
 	adGroup := NewShoppingAdGroup("Default adgroup", businessId, pixelId, catalogId)
 	adGroup.LocationIds = []string{"3012874", "3023519"}
@@ -72,6 +86,35 @@ func TestUpdateShoppingCampaign(t *testing.T) {
 		t.Error(cmp.Or(err, DeleteCampaign(getTestAccount(), campaignCreated.Id)))
 	} else if len(adGroupCreated.Id) == 0 {
 		t.Fatal("no id found after adgroup creation")
+	}
+
+	ad := NewCatalogAd("Default Ad", identityId, catalogId)
+	ad.SetAdText("Best products")
+	adCreated, err := UpdateAd(getTestAccount(), adGroupCreated.Id, ad)
+	if nil != err {
+		t.Error(err)
+	} else if len(adCreated.Id) == 0 {
+		t.Error("no id found after ad creation")
+	}
+
+	adCreated.SetEnabled(false)
+	if adUpdated, e := UpdateAd(getTestAccount(), adGroupCreated.Id, adCreated); e != nil {
+		t.Error(e)
+	} else {
+		adCreated.SecondaryStatus = ""
+		adUpdated.SecondaryStatus = ""
+
+		if !reflect.DeepEqual(adCreated, adUpdated) {
+			buf, _ := json.Marshal(adCreated)
+			log.Println(string(buf))
+			buf, _ = json.Marshal(adUpdated)
+			log.Println(string(buf))
+			t.Error("ad not equal after update")
+		}
+	}
+
+	if err = DeleteAd(getTestAccount(), adCreated.Id); err != nil {
+		t.Error(err)
 	}
 }
 

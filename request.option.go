@@ -65,6 +65,14 @@ func withAccountId(id string) requestOption {
 	})
 }
 
+func withAdGroupIds(ids []string) requestOption {
+	buf, _ := json.Marshal(ids)
+
+	return withQueryString(map[string]string{
+		"adgroup_ids": string(buf),
+	})
+}
+
 // withBusinessId Add bc_id to query string. Required for catalog creation api
 func withBusinessId(id string) requestOption {
 	return withQueryString(map[string]string{

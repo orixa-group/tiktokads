@@ -35,8 +35,15 @@ const urlAdGroupGet = "https://business-api.tiktok.com/open_api/v1.3/adgroup/get
 const urlAdGroupCreate = "https://business-api.tiktok.com/open_api/v1.3/adgroup/create/"
 const urlAdGroupUpdate = "https://business-api.tiktok.com/open_api/v1.3/adgroup/update/"
 
+// ads
+const urlAdCreate = "https://business-api.tiktok.com/open_api/v1.3/ad/create/"
+const urlAdGet = "https://business-api.tiktok.com/open_api/v1.3/ad/get/"
+const urlAdPreview = "https://business-api.tiktok.com/open_api/v1.3/creative/ads_preview/create/"
+const urlAdStatusUpdate = "https://business-api.tiktok.com/open_api/v1.3/ad/status/update/"
+
 // audiences
 const urlAudienceGet = "https://business-api.tiktok.com/open_api/v1.3/dmp/custom_audience/list/"
 
 // const urlInterestsGet = "https://business-api.tiktok.com/open_api/v1.3/targeting/search/"
 const urlInterestsGet = "https://business-api.tiktok.com/open_api/v1.3/tool/interest_keyword/recommend/"
+const urlIdentityGet = "https://business-api.tiktok.com/open_api/v1.3/identity/get/"
