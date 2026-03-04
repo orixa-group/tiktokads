@@ -41,6 +41,12 @@ const urlAdGet = "https://business-api.tiktok.com/open_api/v1.3/ad/get/"
 const urlAdPreview = "https://business-api.tiktok.com/open_api/v1.3/creative/ads_preview/create/"
 const urlAdStatusUpdate = "https://business-api.tiktok.com/open_api/v1.3/ad/status/update/"
 
+// acccount assets (image&vids)
+const urlAccountVideoGet = "https://business-api.tiktok.com/open_api/v1.3/file/video/ad/search/"
+const urlAccountVideoUpload = "https://business-api.tiktok.com/open_api/v1.3/file/video/ad/upload/"
+const urlAccountImageGet = "https://business-api.tiktok.com/open_api/v1.3/file/image/ad/search/"
+const urlAccountImageUpload = "https://business-api.tiktok.com/open_api/v1.3/file/image/ad/upload/"
+
 // audiences
 const urlAudienceGet = "https://business-api.tiktok.com/open_api/v1.3/dmp/custom_audience/list/"
 
