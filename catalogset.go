@@ -3,7 +3,6 @@ package tiktokads
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 )
 
@@ -15,7 +14,6 @@ func (s *rule) UnmarshalJSON(bytes []byte) error {
 	}
 
 	if val, ok := data["field"].(string); ok {
-		log.Println(val)
 		s.Field = val
 	}
 	if val, ok := data["operation"].(string); ok {

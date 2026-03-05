@@ -82,7 +82,6 @@ func TestUpdateShoppingCampaign(t *testing.T) {
 
 	adGroupCreated, err := UpdateAdGroup(getTestAccount(), campaignCreated.Id, adGroup)
 	if nil != err {
-		log.Println(LastRequestPayload)
 		t.Error(cmp.Or(err, DeleteCampaign(getTestAccount(), campaignCreated.Id)))
 	} else if len(adGroupCreated.Id) == 0 {
 		t.Fatal("no id found after adgroup creation")
@@ -115,6 +114,12 @@ func TestUpdateShoppingCampaign(t *testing.T) {
 
 	if err = DeleteAd(getTestAccount(), adCreated.Id); err != nil {
 		t.Error(err)
+	}
+
+	ad = NewCatalogAdWithCustomVideo("custom vid", identityId, catalogId, "https://jolivetboisnegoce.fr", "v10033g50000d6j92l7og65qb0aa5jhg", "ad-site-i18n-sg/202603045d0dcca471a9e75240b7945c")
+	ad.SetAdText("Best products")
+	if _, e := UpdateAd(getTestAccount(), adGroupCreated.Id, ad); e != nil {
+		t.Error(e)
 	}
 }
 

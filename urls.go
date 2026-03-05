@@ -37,6 +37,7 @@ const urlAdGroupUpdate = "https://business-api.tiktok.com/open_api/v1.3/adgroup/
 
 // ads
 const urlAdCreate = "https://business-api.tiktok.com/open_api/v1.3/ad/create/"
+const urlAdUpdate = "https://business-api.tiktok.com/open_api/v1.3/ad/update/"
 const urlAdGet = "https://business-api.tiktok.com/open_api/v1.3/ad/get/"
 const urlAdPreview = "https://business-api.tiktok.com/open_api/v1.3/creative/ads_preview/create/"
 const urlAdStatusUpdate = "https://business-api.tiktok.com/open_api/v1.3/ad/status/update/"
