@@ -8,15 +8,15 @@ type AdGroup struct {
 	OptimizationGoal           AdGroupOptimizationGoal  `json:"optimization_goal,omitempty"`
 	OptimizationEvent          AdGroupOptimizationEvent `json:"optimization_event,omitempty"`
 	BidStrategy                string                   `json:"bid_strategy,omitempty"`
-	BudgetMode                 string                   `json:"budget_mode"`
-	Budget                     float32                  `json:"budget"`
+	BudgetMode                 string                   `json:"budget_mode,omitempty"`
+	Budget                     float32                  `json:"budget,omitempty"`
 	CatalogId                  string                   `json:"catalog_id,omitempty"`
 	LocationIds                []string                 `json:"location_ids,omitempty"`
 	Languages                  []string                 `json:"languages,omitempty"`
 	Gender                     AdGroupGender            `json:"gender,omitempty"`
 	AgeGroups                  []AdGroupAgeGroup        `json:"age_groups,omitempty"`
-	AudienceIds                []AdGroupAgeGroup        `json:"audience_ids,omitempty"`
-	ExcludedAudienceIds        []AdGroupAgeGroup        `json:"excluded_audience_ids,omitempty"`
+	AudienceIds                []string                 `json:"audience_ids,omitempty"`
+	ExcludedAudienceIds        []string                 `json:"excluded_audience_ids,omitempty"`
 	ScheduleType               AdGroupScheduleType      `json:"schedule_type,omitempty"`
 	StartTime                  string                   `json:"schedule_start_time,omitempty"`
 	BillingEvent               AdGroupBillingEvent      `json:"billing_event,omitempty"`
@@ -28,7 +28,7 @@ type AdGroup struct {
 	BcId                       string                   `json:"catalog_authorized_bc_id,omitempty"`
 	VideoDownloadDisabled      bool                     `json:"video_download_disabled,omitempty"`
 	PixelId                    string                   `json:"pixel_id,omitempty"`
-	ShoppingAdsRetargetingType string                   `json:"shopping_ads_retargeting_type"`
+	ShoppingAdsRetargetingType string                   `json:"shopping_ads_retargeting_type,omitempty"`
 
 	Pacing string `json:"pacing,omitempty"`
 }

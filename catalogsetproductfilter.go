@@ -4,7 +4,7 @@ import (
 	"slices"
 )
 
-type ProductFilters struct {
+type productFilters struct {
 	ProductIds   []string `json:"product_ids,omitempty"`
 	ProductTypes []string `json:"product_types,omitempty"`
 	Conditions   []string `json:"conditions,omitempty"`
@@ -15,12 +15,12 @@ type ProductFilters struct {
 	Labels2      []string `json:"labels_2,omitempty" api:"custom_label_2"`
 	Labels3      []string `json:"labels_3,omitempty" api:"custom_label_3"`
 	Labels4      []string `json:"labels_4,omitempty" api:"custom_label_4"`
-	IsIncluded   bool     `json:"is_included"`
+	Included     bool     `json:"is_included"`
 	CanUpdate    bool     `json:"can_update"`
 }
 
-func newProductFiltersFromApi(conds *condition) *ProductFilters {
-	filters := &ProductFilters{
+func newProductFiltersFromApi(conds *condition) *productFilters {
+	filters := &productFilters{
 		CanUpdate: true,
 	}
 
@@ -84,7 +84,7 @@ func newProductFiltersFromApi(conds *condition) *ProductFilters {
 			if nb := len(includeRuleFound); nb > 1 {
 				filters.CanUpdate = false
 			} else if nb > 0 {
-				filters.IsIncluded = includeRuleFound[0]
+				filters.Included = includeRuleFound[0]
 			}
 		}
 	}
@@ -92,31 +92,33 @@ func newProductFiltersFromApi(conds *condition) *ProductFilters {
 	return filters
 }
 
-func newConditionFromProductFilters(filters *ProductFilters) *condition {
+func newConditionFromProductFilters(filters ProductFilters) *condition {
 	res := &condition{
 		And: make([]*rule, 1),
 	}
 
-	if nb := len(filters.ProductIds); nb > 0 {
-		res.And[0] = newRule("item_group_id", filters.IsIncluded, filters.ProductIds)
-	} else if nb = len(filters.ProductTypes); nb > 0 {
-		res.And[0] = newRule("product_type", filters.IsIncluded, filters.ProductTypes)
-	} else if nb = len(filters.Conditions); nb > 0 {
-		res.And[0] = newRule("condition", filters.IsIncluded, filters.Conditions)
-	} else if nb = len(filters.Brands); nb > 0 {
-		res.And[0] = newRule("brand", filters.IsIncluded, filters.Brands)
-	} else if nb = len(filters.Categories); nb > 0 {
-		res.And[0] = newRule("category", filters.IsIncluded, filters.Categories)
-	} else if nb = len(filters.Labels0); nb > 0 {
-		res.And[0] = newRule("custom_label_0", filters.IsIncluded, filters.Labels0)
-	} else if nb = len(filters.Labels1); nb > 0 {
-		res.And[0] = newRule("custom_label_1", filters.IsIncluded, filters.Labels1)
-	} else if nb = len(filters.Labels2); nb > 0 {
-		res.And[0] = newRule("custom_label_2", filters.IsIncluded, filters.Labels2)
-	} else if nb = len(filters.Labels3); nb > 0 {
-		res.And[0] = newRule("custom_label_3", filters.IsIncluded, filters.Labels3)
-	} else if nb = len(filters.Labels4); nb > 0 {
-		res.And[0] = newRule("custom_label_4", filters.IsIncluded, filters.Labels4)
+	if nil != filters {
+		if nb := len(filters.GetProductIds()); nb > 0 {
+			res.And[0] = newRule("item_group_id", filters.IsIncluded(), filters.GetProductIds())
+		} else if nb = len(filters.GetProductTypes()); nb > 0 {
+			res.And[0] = newRule("product_type", filters.IsIncluded(), filters.GetProductTypes())
+		} else if nb = len(filters.GetConditions()); nb > 0 {
+			res.And[0] = newRule("condition", filters.IsIncluded(), filters.GetConditions())
+		} else if nb = len(filters.GetBrands()); nb > 0 {
+			res.And[0] = newRule("brand", filters.IsIncluded(), filters.GetBrands())
+		} else if nb = len(filters.GetCategories()); nb > 0 {
+			res.And[0] = newRule("category", filters.IsIncluded(), filters.GetCategories())
+		} else if nb = len(filters.GetLabels0()); nb > 0 {
+			res.And[0] = newRule("custom_label_0", filters.IsIncluded(), filters.GetLabels0())
+		} else if nb = len(filters.GetLabels1()); nb > 0 {
+			res.And[0] = newRule("custom_label_1", filters.IsIncluded(), filters.GetLabels1())
+		} else if nb = len(filters.GetLabels2()); nb > 0 {
+			res.And[0] = newRule("custom_label_2", filters.IsIncluded(), filters.GetLabels2())
+		} else if nb = len(filters.GetLabels3()); nb > 0 {
+			res.And[0] = newRule("custom_label_3", filters.IsIncluded(), filters.GetLabels3())
+		} else if nb = len(filters.GetLabels4()); nb > 0 {
+			res.And[0] = newRule("custom_label_4", filters.IsIncluded(), filters.GetLabels4())
+		}
 	}
 
 	return res

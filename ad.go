@@ -54,6 +54,21 @@ func (a *Ad) clearForUpdate() {
 	}
 }
 
+func (a *Ad) GetEnabled() bool {
+	return a.OperationStatus == AdOperationStatus_ENABLE
+}
+
+func (a *Ad) SetIdentity(id string) {
+	a.IdentityId = id
+	a.IdentityType = "CUSTOMIZED_USER"
+}
+
+func (a *Ad) SetMediaAssets(videoId string, images []string) {
+	a.VideoId = videoId
+	a.ImageIds = images
+	a.AdFormat = "SINGLE_VIDEO"
+}
+
 func (a *Ad) SetEnabled(enabled bool) {
 	if enabled {
 		a.OperationStatus = AdOperationStatus_ENABLE

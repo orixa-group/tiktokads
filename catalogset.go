@@ -58,10 +58,10 @@ type catalogSet struct {
 }
 
 type ProductSet struct {
-	Id           string          `json:"id"`
-	Name         string          `json:"name"`
-	Filters      *ProductFilters `json:"filters"`
-	ProductCount int             `json:"product_count"`
+	Id           string         `json:"id"`
+	Name         string         `json:"name"`
+	Filters      ProductFilters `json:"filters"`
+	ProductCount int            `json:"product_count"`
 }
 
 func newProductSetFromApi(c *catalogSet) *ProductSet {
@@ -96,11 +96,14 @@ func GetCatalogSets(businessId, catalogId string) ([]*ProductSet, error) {
 
 func UpdateCatalogSet(businessId, catalogId string, productSet *ProductSet) (*ProductSet, error) {
 	body := &catalogSet{
-		Id:         productSet.Id,
-		Name:       productSet.Name,
-		Conditions: newConditionFromProductFilters(productSet.Filters),
-		BcId:       businessId,
-		CatalogId:  catalogId,
+		Id:        productSet.Id,
+		Name:      productSet.Name,
+		BcId:      businessId,
+		CatalogId: catalogId,
+	}
+
+	if nil != productSet.Filters {
+		body.Conditions = newConditionFromProductFilters(productSet.Filters)
 	}
 
 	type response struct {

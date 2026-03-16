@@ -49,9 +49,9 @@ func TestUpdateCatalogSet(t *testing.T) {
 
 	productSet := &ProductSet{
 		Name: "[TestUnit] To delete",
-		Filters: &ProductFilters{
+		Filters: &productFilters{
 			ProductIds: []string{"123", "456"},
-			IsIncluded: true,
+			Included:   true,
 		},
 	}
 	createdSet, err := UpdateCatalogSet(businessId, catalogId, productSet)

@@ -67,6 +67,7 @@ func fetch[T any](req *http.Request) (*T, error) {
 	var res apiResult[T]
 	var buf []byte
 	buf, err = io.ReadAll(resp.Body)
+	LastResponse = string(buf)
 
 	if err = cmp.Or(
 		json.Unmarshal(buf, &res),

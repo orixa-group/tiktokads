@@ -66,10 +66,8 @@ func withAccountId(id string) requestOption {
 }
 
 func withAdGroupIds(ids []string) requestOption {
-	buf, _ := json.Marshal(ids)
-
-	return withQueryString(map[string]string{
-		"adgroup_ids": string(buf),
+	return withFiltering(map[string]any{
+		"adgroup_ids": ids,
 	})
 }
 
