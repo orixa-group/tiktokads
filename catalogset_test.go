@@ -47,12 +47,13 @@ func TestUpdateCatalogSet(t *testing.T) {
 	businessId := "7489850869144485895"
 	catalogId := "7595212727484827393"
 
+	filters := &productFilters{
+		ProductIds: []string{"123", "456"},
+		Included:   true,
+	}
 	productSet := &ProductSet{
-		Name: "[TestUnit] To delete",
-		Filters: &productFilters{
-			ProductIds: []string{"123", "456"},
-			Included:   true,
-		},
+		Name:    "[TestUnit] To delete",
+		Filters: filters,
 	}
 	createdSet, err := UpdateCatalogSet(businessId, catalogId, productSet)
 
@@ -63,7 +64,8 @@ func TestUpdateCatalogSet(t *testing.T) {
 	}
 
 	createdSet.Name = fmt.Sprintf("[TestUnit] updated %s", time.Now().Format(time.DateTime))
-	createdSet.Filters.ProductIds = append(createdSet.Filters.ProductIds, "789")
+	filters.ProductIds = append(filters.ProductIds, "789")
+	createdSet.Filters = filters
 
 	updatedSet, err := UpdateCatalogSet(businessId, catalogId, createdSet)
 	if err != nil {
