@@ -16,11 +16,14 @@ type emptyResult struct {
 type listResult[T any] struct {
 	List         []*T `json:"list"`
 	IdentityList []*T `json:"identity_list"`
+	Pixels       []*T `json:"pixels"`
 }
 
 func (l *listResult[T]) GetResults() []*T {
 	if len(l.IdentityList) > 0 {
 		return l.IdentityList
+	} else if len(l.Pixels) > 0 {
+		return l.Pixels
 	}
 
 	return l.List

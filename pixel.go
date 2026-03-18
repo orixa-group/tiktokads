@@ -16,3 +16,12 @@ func GetBusinessPixels(businessId string) ([]*Pixel, error) {
 
 	return res, err
 }
+
+func GetAccountPixels(accountId string) ([]*Pixel, error) {
+	req := newGetRequest(
+		urlPixelGet,
+		withAccountId(accountId),
+	)
+
+	return fetchAllPages[Pixel](req, 20)
+}
