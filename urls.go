@@ -54,3 +54,6 @@ const urlAudienceGet = "https://business-api.tiktok.com/open_api/v1.3/dmp/custom
 // const urlInterestsGet = "https://business-api.tiktok.com/open_api/v1.3/targeting/search/"
 const urlInterestsGet = "https://business-api.tiktok.com/open_api/v1.3/tool/interest_keyword/recommend/"
 const urlIdentityGet = "https://business-api.tiktok.com/open_api/v1.3/identity/get/"
+
+// reporting
+const urlReporting = "https://business-api.tiktok.com/open_api/v1.3/report/integrated/get/"
