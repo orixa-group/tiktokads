@@ -57,3 +57,6 @@ const urlIdentityGet = "https://business-api.tiktok.com/open_api/v1.3/identity/g
 
 // reporting
 const urlReporting = "https://business-api.tiktok.com/open_api/v1.3/report/integrated/get/"
+
+// musics
+const urlGetMusics = "https://business-api.tiktok.com/open_api/v1.3/file/music/get"

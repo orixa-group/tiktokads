@@ -17,6 +17,7 @@ type listResult[T any] struct {
 	List         []*T `json:"list"`
 	IdentityList []*T `json:"identity_list"`
 	Pixels       []*T `json:"pixels"`
+	Musics       []*T `json:"musics"`
 }
 
 func (l *listResult[T]) GetResults() []*T {
@@ -24,6 +25,8 @@ func (l *listResult[T]) GetResults() []*T {
 		return l.IdentityList
 	} else if len(l.Pixels) > 0 {
 		return l.Pixels
+	} else if len(l.Musics) > 0 {
+		return l.Musics
 	}
 
 	return l.List
