@@ -60,3 +60,6 @@ const urlReporting = "https://business-api.tiktok.com/open_api/v1.3/report/integ
 
 // musics
 const urlGetMusics = "https://business-api.tiktok.com/open_api/v1.3/file/music/get"
+
+// ctas
+const urlGetCtas = "https://business-api.tiktok.com/open_api/v1.3/creative/cta/recommend/"
