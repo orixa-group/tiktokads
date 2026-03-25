@@ -63,3 +63,7 @@ const urlGetMusics = "https://business-api.tiktok.com/open_api/v1.3/file/music/g
 
 // ctas
 const urlGetCtas = "https://business-api.tiktok.com/open_api/v1.3/creative/cta/recommend/"
+
+// product report
+const urlCatalogStatusTaskCreate = "https://business-api.tiktok.com/open_api/v1.3/diagnostic/catalog/product/task/create/"
+const urlCatalogStatusTaskGet = "https://business-api.tiktok.com/open_api/v1.3/diagnostic/catalog/product/task/get/"
