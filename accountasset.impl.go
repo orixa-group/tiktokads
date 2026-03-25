@@ -1,7 +1,7 @@
 package tiktokads
 
 func (i *AssetImage) GetId() string {
-	return i.MaterialId
+	return i.Id
 }
 
 func (i *AssetImage) GetName() string {
@@ -29,7 +29,7 @@ func (i *AssetImage) GetUrl() string {
 }
 
 func (v *AdVideo) GetId() string {
-	return v.MaterialId
+	return v.Id
 }
 
 func (v *AdVideo) GetName() string {
