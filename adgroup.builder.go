@@ -35,3 +35,24 @@ func NewShoppingAdGroup(name, businessId, pixelId, catalogId string) *AdGroup {
 		ShoppingAdsRetargetingType: "OFF",
 	}
 }
+
+func NewSmartAdGroup(businessId, catalogId, pixelId string) *AdGroup {
+	return &AdGroup{
+		BcId:              businessId,
+		CatalogId:         catalogId,
+		PromotionType:     AdGroupPromotionType_WEBSITE,
+		OptimizationGoal:  AdGroupOptimizationGoal_CONVERT,
+		OptimizationEvent: AdGroupOptimizationEvent_SHOPPING,
+		PixelId:           pixelId,
+		BillingEvent:      AdGroupBillingEvent_OCPM,
+		ScheduleType:      AdGroupScheduleType_FROM_NOW,
+
+		PlacementType: "PLACEMENT_TYPE_NORMAL",
+		Placements:    []AdGroupPlacement{AdGroupPlacement_TIKTOK},
+
+		BidType:                   AdGroupBidType_NO_BID,
+		DeepBidType:               "VO_HIGHEST_VALUE",
+		TargetingOptimizationMode: "AUTOMATIC",
+		StartTime:                 time.Now().Format(time.DateTime),
+	}
+}

@@ -16,3 +16,17 @@ func NewShoppingCatalogCampaign(name string) *Campaign {
 
 	return c
 }
+
+func NewSmartCatalogCampaign() *Campaign {
+	c := &Campaign{
+		OperationStatus:    CampaignOperationStatus_PAUSED,
+		ObjectiveType:      CampaignObjectiveType_WEB_CONVERSIONS,
+		SalesDestination:   CampaignSalesDestination_WEBSITE,
+		CatalogEnabled:     true,
+		BudgetOptimization: true,
+		CatalogType:        "ECOMMERCE",
+	}
+	c.SetDynamicBudget(true)
+
+	return c
+}

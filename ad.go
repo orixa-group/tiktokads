@@ -2,6 +2,7 @@ package tiktokads
 
 import (
 	"errors"
+	"math"
 	"reflect"
 	"time"
 )
@@ -126,6 +127,35 @@ func GetAds(accountId, adGroupId string) ([]*Ad, error) {
 	return fetchAllPages[Ad](req, 100)
 }
 
+func GetAd(accountId, adGroupId, adId string) (*Ad, error) {
+	ads, err := GetAds(accountId, adGroupId)
+	if nil != err {
+		return nil, err
+	} else {
+		for _, ad := range ads {
+			if ad.Id == adId {
+				return ad, nil
+			}
+		}
+	}
+
+	return nil, adNotFoundError
+}
+
+func waitForAd(accountId, adGroupId, adId string) (*Ad, error) {
+	for i := float64(1); i <= 10; i++ {
+		if ad, err := GetAd(accountId, adGroupId, adId); errors.Is(err, adNotFoundError) {
+			time.Sleep(time.Duration(math.Pow(1.44, i)) * 1000 * time.Millisecond)
+		} else if err != nil {
+			return nil, err
+		} else {
+			return ad, nil
+		}
+	}
+
+	return nil, searchTimeoutError
+}
+
 func UpdateAd(accountId, adGroupId string, ad *Ad) (*Ad, error) {
 	adId := ad.Id
 	if len(ad.Id) == 0 {
@@ -140,8 +170,6 @@ func UpdateAd(accountId, adGroupId string, ad *Ad) (*Ad, error) {
 			return nil, err
 		}
 		adId = created.AdIds[0]
-
-		time.Sleep(4 * time.Second)
 	} else {
 		if len(ad.OperationStatus) > 0 {
 			if e := updateAdStatus(accountId, ad.Id, ad.OperationStatus); e != nil {
@@ -170,18 +198,7 @@ func UpdateAd(accountId, adGroupId string, ad *Ad) (*Ad, error) {
 
 	}
 
-	ads, err := GetAds(accountId, adGroupId)
-	if nil != err {
-		return nil, err
-	}
-
-	for i, _ := range ads {
-		if ads[i].Id == adId {
-			return ads[i], nil
-		}
-	}
-
-	return nil, errors.New("ad not found")
+	return waitForAd(accountId, adGroupId, adId)
 }
 
 func DeleteAd(accountId, adId string) error {

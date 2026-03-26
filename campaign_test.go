@@ -123,6 +123,55 @@ func TestUpdateShoppingCampaign(t *testing.T) {
 	}
 }
 
+func TestNewSmartCatalogCampaign(t *testing.T) {
+	initTestSession()
+	businessId := "7489850869144485895"
+	pixelId := "7595236536677974034"
+	catalogId := "7595212727484827393"
+
+	campaign := NewSmartCatalogCampaign()
+	campaign.SetName(fmt.Sprintf("[TestUnit] Smart+ %s", time.Now().Format(time.DateTime)))
+	campaign.SetBudget(5978)
+
+	created, err := UpdateSmartCampaign(getTestAccount(), campaign)
+	if nil != err {
+		t.Fatal(err)
+	}
+
+	if len(created.Id) == 0 {
+		t.Fatal("no id found after update")
+	}
+	created.Name = fmt.Sprintf("[TestUnit] Smart+ updated %s", time.Now().Format(time.DateTime))
+	created.SetEnabled(true)
+
+	updated, err := UpdateSmartCampaign(getTestAccount(), created)
+	if nil != err {
+		t.Error(err)
+	} else if !reflect.DeepEqual(updated, created) {
+		buf, _ := json.Marshal(created)
+		log.Println(string(buf))
+		buf, _ = json.Marshal(updated)
+		log.Println(string(buf))
+		t.Error("updated campaign not equal to created campaign")
+	}
+
+	adGroup := NewSmartAdGroup(businessId, catalogId, pixelId)
+	adGroup.Name = "Default Ad"
+	adGroup.SetLocationIds([]string{"3012874", "3023519"}, true)
+
+	createdAdGroup, err := UpdateSmartAdgroup(getTestAccount(), created.Id, adGroup)
+
+	if nil != err {
+		t.Error(err)
+	} else if len(createdAdGroup.Id) == 0 {
+		t.Error("no id found after update")
+	}
+
+	if nil != err && nil != created {
+		DeleteCampaign(getTestAccount(), created.Id)
+	}
+}
+
 func TestDeleteCampaign(t *testing.T) {
 	initTestSession()
 

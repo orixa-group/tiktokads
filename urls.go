@@ -24,7 +24,8 @@ const urlBusinessPixelGet = "https://business-api.tiktok.com/open_api/v1.3/bc/pi
 const urlPixelGet = "https://business-api.tiktok.com/open_api/v1.3/pixel/list/"
 
 // campaigns
-const urlCampaignSmartCreate = "https://business-api.tiktok.com/open_api/v1.3/campaign/spc/create/"
+const urlCampaignSmartCreate = "https://business-api.tiktok.com/open_api/v1.3/smart_plus/campaign/create/"
+const urlCampaignSmartUpdate = "https://business-api.tiktok.com/open_api/v1.3/smart_plus/campaign/update/"
 const urlCampaignsFetch = "https://business-api.tiktok.com/open_api/v1.3/campaign/get/"
 const urlCampaignCreate = "https://business-api.tiktok.com/open_api/v1.3/campaign/create/"
 const urlCampaignUpdate = "https://business-api.tiktok.com/open_api/v1.3/campaign/update/"
@@ -35,12 +36,18 @@ const urlAdGroupGet = "https://business-api.tiktok.com/open_api/v1.3/adgroup/get
 const urlAdGroupCreate = "https://business-api.tiktok.com/open_api/v1.3/adgroup/create/"
 const urlAdGroupUpdate = "https://business-api.tiktok.com/open_api/v1.3/adgroup/update/"
 
+const urlSmartAdGroupCreate = "https://business-api.tiktok.com/open_api/v1.3/smart_plus/adgroup/create/"
+const urlSmartAdGroupUpdate = "https://business-api.tiktok.com/open_api/v1.3/smart_plus/adgroup/update/"
+
 // ads
 const urlAdCreate = "https://business-api.tiktok.com/open_api/v1.3/ad/create/"
 const urlAdUpdate = "https://business-api.tiktok.com/open_api/v1.3/ad/update/"
 const urlAdGet = "https://business-api.tiktok.com/open_api/v1.3/ad/get/"
 const urlAdPreview = "https://business-api.tiktok.com/open_api/v1.3/creative/ads_preview/create/"
 const urlAdStatusUpdate = "https://business-api.tiktok.com/open_api/v1.3/ad/status/update/"
+
+const urlSmartAdStatusCreate = "https://business-api.tiktok.com/open_api/v1.3/smart_plus/ad/status/create/"
+const urlSmartAdStatusUpdate = "https://business-api.tiktok.com/open_api/v1.3/smart_plus/ad/status/update/"
 
 // acccount assets (image&vids)
 const urlAccountVideoGet = "https://business-api.tiktok.com/open_api/v1.3/file/video/ad/search/"

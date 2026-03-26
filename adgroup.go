@@ -1,5 +1,10 @@
 package tiktokads
 
+import (
+	"cmp"
+	"math/rand/v2"
+)
+
 type AdGroup struct {
 	Id                         string                   `json:"adgroup_id,omitempty"`
 	Name                       string                   `json:"adgroup_name,omitempty"`
@@ -31,11 +36,30 @@ type AdGroup struct {
 	ShoppingAdsRetargetingType string                   `json:"shopping_ads_retargeting_type,omitempty"`
 
 	Pacing string `json:"pacing,omitempty"`
+
+	// Smart+ specific fields
+	TargetingSpec             *adGroupTargetingSpec `json:"targeting_spec,omitempty"`
+	DeepBidType               string                `json:"deep_bid_type,omitempty"`
+	TargetingOptimizationMode string                `json:"targeting_optimization_mode,omitempty"`
+}
+
+type adGroupTargetingSpec struct {
+	LocationIds []string `json:"location_ids,omitempty"`
+}
+
+func (a *AdGroup) SetLocationIds(locationIds []string, isSmart bool) {
+	if isSmart {
+		a.TargetingSpec = cmp.Or(a.TargetingSpec, &adGroupTargetingSpec{})
+		a.TargetingSpec.LocationIds = locationIds
+	} else {
+		a.LocationIds = locationIds
+	}
 }
 
 type adGroupUpdateRequest struct {
 	AdvertiserId string `json:"advertiser_id"`
-	CampaignId   string `json:"campaign_id,omitempty"` // required only for creation
+	CampaignId   string `json:"campaign_id,omitempty"`       // required only for creation
+	RequestId    int64  `json:"request_id,omitempty,string"` // required only for smart+
 	*AdGroup
 }
 
@@ -51,15 +75,27 @@ func GetAdGroups(accountId, campaignId string) ([]*AdGroup, error) {
 	return fetchAllPages[AdGroup](req, 1000)
 }
 
-func UpdateAdGroup(accountId, campaignId string, ag *AdGroup) (*AdGroup, error) {
+func updateAdgroup(accountId, campaignId string, ag *AdGroup, isSmart bool) (*AdGroup, error) {
+	urlCreate := map[bool]string{
+		false: urlAdGroupCreate,
+		true:  urlSmartAdGroupCreate,
+	}
+	urlUpdate := map[bool]string{
+		false: urlAdGroupUpdate,
+		true:  urlSmartAdGroupUpdate,
+	}
+
 	payload := &adGroupUpdateRequest{
 		AdvertiserId: accountId,
 		AdGroup:      ag,
 	}
-	url := urlAdGroupUpdate
+	if isSmart {
+		payload.RequestId = rand.Int64()
+	}
+	url := urlUpdate[isSmart]
 	if len(ag.Id) == 0 {
 		payload.CampaignId = campaignId
-		url = urlAdGroupCreate
+		url = urlCreate[isSmart]
 	}
 
 	req := newPostRequest(
@@ -70,4 +106,12 @@ func UpdateAdGroup(accountId, campaignId string, ag *AdGroup) (*AdGroup, error) 
 	updated, err := fetch[AdGroup](req)
 
 	return updated, err
+}
+
+func UpdateAdGroup(accountId, campaignId string, ag *AdGroup) (*AdGroup, error) {
+	return updateAdgroup(accountId, campaignId, ag, false)
+}
+
+func UpdateSmartAdgroup(accountId, campaignId string, ad *AdGroup) (*AdGroup, error) {
+	return updateAdgroup(accountId, campaignId, ad, true)
 }

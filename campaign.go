@@ -2,6 +2,9 @@ package tiktokads
 
 import (
 	"errors"
+	"fmt"
+	"math"
+	"math/rand/v2"
 	"time"
 )
 
@@ -18,10 +21,14 @@ type Campaign struct {
 	BudgetMode           CampaignBudgetMode           `json:"budget_mode,omitempty"`
 	BudgetOptimization   bool                         `json:"budget_optimize_on"`
 	CatalogEnabled       bool                         `json:"catalog_enabled"`
+
+	// Smart+
+	CatalogType string `json:"catalog_type"`
 }
 
 type campaignCreate struct {
 	AdvertiserId string `json:"advertiser_id,omitempty"`
+	RequestId    int64  `json:"request_id,omitempty,string"`
 	Campaign
 }
 
@@ -58,17 +65,23 @@ func GetCampaigns(accountId string) ([]*Campaign, error) {
 
 // GetCampaign Get campaign from id
 func GetCampaign(accountId, campaignId string) (*Campaign, error) {
-	if campaigns, err := GetCampaigns(accountId); nil != err {
-		return nil, err
-	} else {
-		for _, campaign := range campaigns {
-			if campaign.Id == campaignId {
-				return campaign, nil
-			}
-		}
-	}
+	req := newGetRequest(
+		urlCampaignsFetch,
+		withAccountId(accountId),
+		withFiltering(map[string]any{
+			"campaign_ids": []string{campaignId},
+		}),
+	)
 
-	return nil, errors.New("campaign-not-found")
+	if campaigns, err := fetchAllPages[Campaign](req, 1000); err != nil {
+		return nil, err
+	} else if len(campaigns) == 0 {
+		return nil, campaignNotFoundError
+	} else if len(campaigns) > 1 {
+		return nil, fmt.Errorf("unexpected campaign count: %d", len(campaigns))
+	} else {
+		return campaigns[0], nil
+	}
 }
 
 func DeleteCampaign(accountId, campaignId string) error {
@@ -91,25 +104,39 @@ func updateCampaignStatus(accountId, campaignId string, status CampaignOperation
 }
 
 // UpdateCampaign
-func UpdateCampaign(accountId string, campaign *Campaign) (*Campaign, error) {
+func updateCampaign(accountId string, campaign *Campaign, isSmart bool) (*Campaign, error) {
 	var id = campaign.Id
+
+	urlsCreate := map[bool]string{
+		false: urlCampaignCreate,
+		true:  urlCampaignSmartCreate,
+	}
+	urlsUpdate := map[bool]string{
+		false: urlCampaignUpdate,
+		true:  urlCampaignSmartUpdate,
+	}
+
 	if len(id) == 0 {
+		payload := &campaignCreate{
+			AdvertiserId: accountId,
+			Campaign:     *campaign,
+		}
+		if isSmart {
+			payload.RequestId = rand.Int64()
+		}
 		req := newPostRequest(
-			urlCampaignCreate, &campaignCreate{
-				AdvertiserId: accountId,
-				Campaign:     *campaign,
-			},
+			urlsCreate[isSmart],
+			payload,
 		)
 
 		if created, err := fetch[campaignCreateResponse](req); nil != err {
 			return nil, err
 		} else {
-			time.Sleep(5 * time.Second)
 			id = created.CampaignId
 		}
 	} else {
 		req := newPostRequest(
-			urlCampaignUpdate,
+			urlsUpdate[isSmart],
 			&campaignCreate{
 				AdvertiserId: accountId,
 				Campaign:     *campaign,
@@ -125,8 +152,29 @@ func UpdateCampaign(accountId string, campaign *Campaign) (*Campaign, error) {
 				return nil, err
 			}
 		}
-		time.Sleep(5 * time.Second)
 	}
 
-	return GetCampaign(accountId, id)
+	return waitForCampaign(accountId, id)
+}
+
+func UpdateCampaign(accountId string, campaign *Campaign) (*Campaign, error) {
+	return updateCampaign(accountId, campaign, false)
+}
+
+func UpdateSmartCampaign(accountId string, campaign *Campaign) (*Campaign, error) {
+	return updateCampaign(accountId, campaign, true)
+}
+
+func waitForCampaign(accountId, campaignId string) (*Campaign, error) {
+	for i := float64(1); i <= 10; i++ {
+		if campaign, err := GetCampaign(accountId, campaignId); errors.Is(err, campaignNotFoundError) {
+			time.Sleep(time.Duration(math.Pow(1.44, i)*1000) * time.Millisecond)
+		} else if nil != err {
+			return nil, err
+		} else {
+			return campaign, nil
+		}
+	}
+
+	return nil, searchTimeoutError
 }
